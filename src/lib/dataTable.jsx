@@ -27,14 +27,15 @@ const DataTable = ({ data, headers }) => {
         (employee) =>
           employee.firstName.toLowerCase().includes(search.toLowerCase()) ||
           employee.lastName.toLowerCase().includes(search.toLowerCase()) ||
-          employee.dateOfBirth.includes(search.toLowerCase()) ||
+          employee.dateBirth.includes(search.toLowerCase()) ||
           employee.startDate.includes(search.toLowerCase()) ||
           employee.department.toLowerCase().includes(search.toLowerCase()) ||
           employee.street.toLowerCase().includes(search.toLowerCase()) ||
           employee.city.toLowerCase().includes(search.toLowerCase()) ||
           employee.state.toLowerCase().includes(search.toLowerCase()) ||
-          employee.zipCode.includes(search.toLowerCase())
+          employee.zip.includes(search.toLowerCase())
       );
+      console.log(computedEmployeesList);
     }
 
     setTotalItems(computedEmployeesList.length);
@@ -93,7 +94,14 @@ const DataTable = ({ data, headers }) => {
           onSorting={(field, order) => setSorting({ field, order })}
         />
         <tbody>
-          {employeesList.length ? (
+          {!employeesListData.length && (
+            <tr className="odd">
+              <td colSpan="9" className="dataTables_empty">
+                No matching records found
+              </td>
+            </tr>
+          )}
+          {employeesList.length && employeesListData ? (
             employeesListData.map((employee, idx) => {
               return (
                 <tr key={idx} className={idx % 2 === 0 ? "even" : "odd"}>
@@ -115,7 +123,11 @@ const DataTable = ({ data, headers }) => {
       <div className="dataTables_info">
         {search ? (
           <span>
-            Showing {startIndex + 1} to{" "}
+            {!employeesListData.length ? (
+              <span>Showing {startIndex} to </span>
+            ) : (
+              <span>Showing {startIndex + 1} to </span>
+            )}
             {Math.min(endIndex, employeesListData.length)} of{" "}
             {employeesListData.length} entries. (filtered from{" "}
             {employeesList.length} total entries)
@@ -132,7 +144,7 @@ const DataTable = ({ data, headers }) => {
       <Pagination
         total={totalItems}
         itemsPerPage={entries}
-        currentPage={currentPage}
+        currentPage={employeesListData.length ? currentPage : 0}
         onPageChange={(page) => setCurrentPage(page)}
       />
     </div>

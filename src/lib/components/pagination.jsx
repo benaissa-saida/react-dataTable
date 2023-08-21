@@ -7,7 +7,6 @@ const Pagination = ({
   onPageChange,
 }) => {
   const [totalPages, setTotalPages] = useState(0);
-
   useEffect(() => {
     if (total > 0 && itemsPerPage > 0)
       setTotalPages(Math.ceil(total / itemsPerPage));
@@ -39,21 +38,21 @@ const Pagination = ({
     <div className="dataTables_paginate paging_simple_numbers">
       <button
         onClick={() => onPageChange(currentPage - 1)}
-        disabled={1 === currentPage}
+        disabled={1 === currentPage || currentPage === 0}
         className={
-          1 === currentPage
+          1 === currentPage || currentPage === 0
             ? "paginate_button previous disabled"
             : "paginate_button previous"
         }
       >
         Previous
       </button>
-      {paginationItems}
+      {currentPage > 0 ? paginationItems : null}
       <button
         onClick={() => onPageChange(currentPage + 1)}
-        disabled={totalPages === currentPage}
+        disabled={totalPages === currentPage || currentPage === 0}
         className={
-          totalPages === currentPage
+          totalPages === currentPage || currentPage === 0
             ? "paginate_button next disabled"
             : "paginate_button next"
         }

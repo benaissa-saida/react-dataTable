@@ -47,15 +47,15 @@ var Pagination = function Pagination(_ref) {
       onClick: function onClick() {
         return onPageChange(currentPage - 1);
       },
-      disabled: 1 === currentPage,
-      className: 1 === currentPage ? "paginate_button previous disabled" : "paginate_button previous",
+      disabled: 1 === currentPage || currentPage === 0,
+      className: 1 === currentPage || currentPage === 0 ? "paginate_button previous disabled" : "paginate_button previous",
       children: "Previous"
-    }), paginationItems, /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+    }), currentPage > 0 ? paginationItems : null, /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
       onClick: function onClick() {
         return onPageChange(currentPage + 1);
       },
-      disabled: totalPages === currentPage,
-      className: totalPages === currentPage ? "paginate_button next disabled" : "paginate_button next",
+      disabled: totalPages === currentPage || currentPage === 0,
+      className: totalPages === currentPage || currentPage === 0 ? "paginate_button next disabled" : "paginate_button next",
       children: "Next"
     })]
   });

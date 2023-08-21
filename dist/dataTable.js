@@ -59,8 +59,9 @@ var DataTable = function DataTable(_ref) {
     var computedEmployeesList = employeesList;
     if (search) {
       computedEmployeesList = computedEmployeesList.filter(function (employee) {
-        return employee.firstName.toLowerCase().includes(search.toLowerCase()) || employee.lastName.toLowerCase().includes(search.toLowerCase()) || employee.dateOfBirth.includes(search.toLowerCase()) || employee.startDate.includes(search.toLowerCase()) || employee.department.toLowerCase().includes(search.toLowerCase()) || employee.street.toLowerCase().includes(search.toLowerCase()) || employee.city.toLowerCase().includes(search.toLowerCase()) || employee.state.toLowerCase().includes(search.toLowerCase()) || employee.zipCode.includes(search.toLowerCase());
+        return employee.firstName.toLowerCase().includes(search.toLowerCase()) || employee.lastName.toLowerCase().includes(search.toLowerCase()) || employee.dateBirth.includes(search.toLowerCase()) || employee.startDate.includes(search.toLowerCase()) || employee.department.toLowerCase().includes(search.toLowerCase()) || employee.street.toLowerCase().includes(search.toLowerCase()) || employee.city.toLowerCase().includes(search.toLowerCase()) || employee.state.toLowerCase().includes(search.toLowerCase()) || employee.zip.includes(search.toLowerCase());
       });
+      console.log(computedEmployeesList);
     }
     setTotalItems(computedEmployeesList.length);
     var reversed = sorting.order === "asc" ? 1 : -1;
@@ -108,8 +109,15 @@ var DataTable = function DataTable(_ref) {
             order: order
           });
         }
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("tbody", {
-        children: employeesList.length ? employeesListData.map(function (employee, idx) {
+      }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("tbody", {
+        children: [!employeesListData.length && /*#__PURE__*/(0, _jsxRuntime.jsx)("tr", {
+          className: "odd",
+          children: /*#__PURE__*/(0, _jsxRuntime.jsx)("td", {
+            colSpan: "9",
+            className: "dataTables_empty",
+            children: "No matching records found"
+          })
+        }), employeesList.length && employeesListData ? employeesListData.map(function (employee, idx) {
           return /*#__PURE__*/(0, _jsxRuntime.jsx)("tr", {
             className: idx % 2 === 0 ? "even" : "odd",
             children: headers.map(function (col, colIdx) {
@@ -125,19 +133,23 @@ var DataTable = function DataTable(_ref) {
             className: "dataTables_empty",
             children: "No data available in table"
           })
-        })
+        })]
       })]
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       className: "dataTables_info",
       children: search ? /*#__PURE__*/(0, _jsxRuntime.jsxs)("span", {
-        children: ["Showing ", startIndex + 1, " to", " ", Math.min(endIndex, employeesListData.length), " of", " ", employeesListData.length, " entries. (filtered from", " ", employeesList.length, " total entries)"]
+        children: [!employeesListData.length ? /*#__PURE__*/(0, _jsxRuntime.jsxs)("span", {
+          children: ["Showing ", startIndex, " to "]
+        }) : /*#__PURE__*/(0, _jsxRuntime.jsxs)("span", {
+          children: ["Showing ", startIndex + 1, " to "]
+        }), Math.min(endIndex, employeesListData.length), " of", " ", employeesListData.length, " entries. (filtered from", " ", employeesList.length, " total entries)"]
       }) : /*#__PURE__*/(0, _jsxRuntime.jsxs)("span", {
         children: ["Showing ", startIndex + 1, " to", " ", Math.min(endIndex, employeesList.length), " of ", employeesList.length, " ", "entries."]
       })
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_pagination.default, {
       total: totalItems,
       itemsPerPage: entries,
-      currentPage: currentPage,
+      currentPage: employeesListData.length ? currentPage : 0,
       onPageChange: function onPageChange(page) {
         return setCurrentPage(page);
       }
