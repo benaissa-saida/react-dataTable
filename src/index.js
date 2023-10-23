@@ -8,7 +8,7 @@ function App() {
     {
       firstName: "Saida",
       lastName: "Benaissa",
-      dateBirth: "07/28/1994",
+      dateBirth: "08/17/1994",
       startDate: "08/14/2023",
       department: "Engineering",
       street: "210 rue du président salvador allende",
@@ -19,7 +19,7 @@ function App() {
     {
       firstName: "kjdfshkd",
       lastName: "gfddg",
-      dateBirth: "07/08/1994",
+      dateBirth: "08/07/1994",
       startDate: "08/04/2023",
       department: "Engineering",
       street: "215 rue de la pluie",
