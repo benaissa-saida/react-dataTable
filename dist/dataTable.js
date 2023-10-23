@@ -13,6 +13,7 @@ var _pagination = _interopRequireDefault(require("./components/pagination"));
 var _search = _interopRequireDefault(require("./components/search"));
 require("./default.css");
 var _entries = _interopRequireDefault(require("./components/entries"));
+var _isValid = _interopRequireDefault(require("date-fns/isValid"));
 var _jsxRuntime = require("react/jsx-runtime");
 var DataTable = function DataTable(_ref) {
   var data = _ref.data,
@@ -45,37 +46,54 @@ var DataTable = function DataTable(_ref) {
     _useState14 = (0, _slicedToArray2.default)(_useState13, 2),
     entries = _useState14[0],
     setEntries = _useState14[1];
-  var _useState15 = (0, _react.useState)({
-      field: "firstName",
+  var _useState15 = (0, _react.useState)(""),
+    _useState16 = (0, _slicedToArray2.default)(_useState15, 2),
+    firstField = _useState16[0],
+    setFirstField = _useState16[1];
+  var _useState17 = (0, _react.useState)({
+      field: firstField,
       order: "asc"
     }),
-    _useState16 = (0, _slicedToArray2.default)(_useState15, 2),
-    sorting = _useState16[0],
-    setSorting = _useState16[1];
+    _useState18 = (0, _slicedToArray2.default)(_useState17, 2),
+    sorting = _useState18[0],
+    setSorting = _useState18[1];
   (0, _react.useEffect)(function () {
     setEmployeesList(data);
-  }, [data]);
+    if (data.length > 0) {
+      setFirstField(Object.keys(data[0])[0]);
+    }
+  }, [data, setFirstField]);
   var employeesListData = (0, _react.useMemo)(function () {
+    console.log(employeesList);
     var computedEmployeesList = employeesList;
     if (search) {
-      computedEmployeesList = computedEmployeesList.filter(function (employee) {
-        return employee.firstName.toLowerCase().includes(search.toLowerCase()) || employee.lastName.toLowerCase().includes(search.toLowerCase()) || employee.dateBirth.includes(search.toLowerCase()) || employee.startDate.includes(search.toLowerCase()) || employee.department.toLowerCase().includes(search.toLowerCase()) || employee.street.toLowerCase().includes(search.toLowerCase()) || employee.city.toLowerCase().includes(search.toLowerCase()) || employee.state.toLowerCase().includes(search.toLowerCase()) || employee.zip.includes(search.toLowerCase());
+      computedEmployeesList = computedEmployeesList.filter(function (obj) {
+        //filter if search includes value of field tolowercase
+        //else filter if search includes value of field
+        for (var key in obj) {
+          if (typeof obj[key] === "string" && obj[key].toLowerCase().includes(search.toLowerCase())) {
+            return true;
+          } else if (obj[key].includes(search)) {
+            return true;
+          }
+        }
+        return false;
       });
       console.log(computedEmployeesList);
     }
     setTotalItems(computedEmployeesList.length);
     var reversed = sorting.order === "asc" ? 1 : -1;
-    if (sorting.field === "dateOfBirth" || sorting.field === "startDate") {
-      //Sorting dates
-      computedEmployeesList = computedEmployeesList.sort(function (a, b) {
+
+    //Sorting employeesList
+    computedEmployeesList = computedEmployeesList.sort(function (a, b) {
+      if ((0, _isValid.default)(new Date(a[sorting.field])) || (0, _isValid.default)(new Date(b[sorting.field]))) {
         return reversed * (new Date(a[sorting.field]).getTime() - new Date(b[sorting.field]).getTime());
-      });
-    } else {
-      //Sorting employeesList
-      computedEmployeesList = computedEmployeesList.sort(function (a, b) {
+      } else if (sorting.field !== "") {
         return reversed * a[sorting.field].localeCompare(b[sorting.field]);
-      });
-    }
+      } else {
+        return [];
+      }
+    });
     setStartIndex((currentPage - 1) * entries);
     setEndIndex(startIndex + entries);
 
