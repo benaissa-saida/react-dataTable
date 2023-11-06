@@ -25,7 +25,6 @@ const DataTable = ({ data, headers }) => {
   }, [data, setFirstField]);
 
   const employeesListData = useMemo(() => {
-    console.log(employeesList);
     let computedEmployeesList = employeesList;
 
     if (search) {
@@ -44,7 +43,6 @@ const DataTable = ({ data, headers }) => {
         }
         return false;
       });
-      console.log(computedEmployeesList);
     }
 
     setTotalItems(computedEmployeesList.length);
