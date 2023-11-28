@@ -14,15 +14,15 @@ const DataTable = ({ data, headers }) => {
   const [endIndex, setEndIndex] = useState(0);
   const [search, setSearch] = useState("");
   const [entries, setEntries] = useState(10);
-  const [firstField, setFirstField] = useState("");
-  const [sorting, setSorting] = useState({ field: firstField, order: "asc" });
+  const [sorting, setSorting] = useState({ field: "", order: "asc" });
 
   useEffect(() => {
-    setEmployeesList(data);
     if (data.length > 0) {
-      setFirstField(Object.keys(data[0])[0]);
+      const firstField = Object.keys(data[0])[0];
+      setSorting({ field: firstField, order: "asc" });
+      setEmployeesList(data);
     }
-  }, [data, setFirstField]);
+  }, [data]);
 
   const employeesListData = useMemo(() => {
     let computedEmployeesList = employeesList;
@@ -103,6 +103,7 @@ const DataTable = ({ data, headers }) => {
         <Header
           headers={headers}
           onSorting={(field, order) => setSorting({ field, order })}
+          field={sorting.field}
         />
         <tbody>
           {!employeesListData.length && (

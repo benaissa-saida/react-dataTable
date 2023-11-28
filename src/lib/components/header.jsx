@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretUp, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
-const Header = ({ headers, onSorting }) => {
-  const [sortingField, setSortingField] = useState("firstName");
+const Header = ({ headers, onSorting, field }) => {
+  const [sortingField, setSortingField] = useState("");
   const [sortingOrder, setSortingOrder] = useState("asc");
+
+  useEffect(() => {
+    if (field) {
+      setSortingField(field);
+    }
+  }, [field]);
 
   const onSortingChange = (field) => {
     const order =
