@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 function Entries({ onEntriesChange }) {
   const optionsEntries = [10, 25, 50, 100];
